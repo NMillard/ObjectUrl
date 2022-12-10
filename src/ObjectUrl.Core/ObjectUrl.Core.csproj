@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <ProjectName>ObjectUrl.Core</ProjectName>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <PackageOutputPath>../../nupkg</PackageOutputPath>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <Title>$(ProjectName)</Title>
+        <PackageId>$(ProjectName)</PackageId>
+        
+        <Summary>Build query strings from objects.</Summary>
+        <DebugType>embedded</DebugType>
+        <DebugSymbols>true</DebugSymbols>
+        <EmbedAllSources>true</EmbedAllSources>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MinVer" Version="4.2.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+</Project>

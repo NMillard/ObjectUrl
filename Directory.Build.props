@@ -1,0 +1,16 @@
+<Project>
+    <PropertyGroup>
+        <Deterministic>true</Deterministic>
+    </PropertyGroup>
+    
+    <PropertyGroup Label="Package Information">
+        <Authors>Nicklas Millard</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Nicklas Millard</Copyright>
+        <PackageTags>url; url builder; uri; uri builder; query string;</PackageTags>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+</Project>
