@@ -5,7 +5,7 @@ namespace ObjectUrl.Core;
 /// <summary>
 /// 
 /// </summary>
-public abstract class Input
+public abstract class Input<T>
 {
     /// <summary>
     /// 
@@ -33,7 +33,47 @@ public abstract class Input
         }
     }
 
-    private QueryParameterAttribute? GetQueryAttribute(MemberInfo info) 
+    /// <summary>
+    /// 
+    /// </summary>
+    public string EndpointPath
+    {
+        get
+        {
+            var attribute = GetType().GetCustomAttribute<EndpointAttribute>();
+            if (attribute is null) throw new InvalidOperationException(string.Format(Messages.MissingEndpoint, GetType().Name));
+
+            Dictionary<string, string?> pathParameters = GetPathParameters();
+            
+            string path = attribute.Path;
+            foreach (KeyValuePair<string, string?> parameter in pathParameters)
+            {
+                var placeholder = $"{{{parameter.Key}}}";
+                if (path.Contains(placeholder))
+                {
+                    path = path.Replace(placeholder, parameter.Value);
+                }
+            }
+
+            return path;
+        }
+    }
+
+    private Dictionary<string, string?> GetPathParameters()
+    {
+        return GetType().GetProperties()
+            .Where(p => p.GetCustomAttribute<PathParameterAttribute>() is not null)
+            .Select(p =>
+            {
+                var parameter = p.GetCustomAttribute<PathParameterAttribute>();
+                string pathName = parameter?.Name ?? p.Name;
+                
+                return new { PathName = pathName, Value = p.GetValue(this)?.ToString() };
+            })
+            .ToDictionary(p => p.PathName, p => p.Value);
+    } 
+
+    private static QueryParameterAttribute? GetQueryAttribute(MemberInfo info) 
         => info.GetCustomAttribute(typeof(QueryParameterAttribute)) as QueryParameterAttribute;
 
     private static Func<PropertyInfo, bool> HasQueryAttribute()

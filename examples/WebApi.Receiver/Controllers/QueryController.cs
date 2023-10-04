@@ -15,6 +15,11 @@ public class QueryController : ControllerBase
     public IActionResult Get(decimal amount, string? creditDebit)
     {
         logger.LogInformation("amount={Amount}; creditDebit={CreditDebit}", amount, creditDebit);   
-        return Ok();
+        return Ok(new
+        {
+            Id = Guid.NewGuid(),
+            Amount = amount,
+            CreditDebit = creditDebit
+        });
     }
 }

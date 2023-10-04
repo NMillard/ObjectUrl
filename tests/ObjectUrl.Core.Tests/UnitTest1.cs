@@ -51,7 +51,7 @@ public class UnitTest1
     }
 }
 
-public class SomeRequest : Input
+public class SomeRequest : Input<string>
 {
     [QueryParameter<IsoDateOnlyFormatter>("date")]
     public DateOnly Date { get; init; }

@@ -12,10 +12,9 @@ public static class ObjectParameterBuilder
     /// </summary>
     /// <param name="input"></param>
     /// <returns></returns>
-    public static string BuildQueryString(Input input)
+    public static string BuildQueryString<T>(Input<T> input)
     {
-        Dictionary<string, string?> parameters = input.QueryParameters;
-        IEnumerable<string> queryString = parameters
+        IEnumerable<string> queryString = input.QueryParameters
             .Select(prop => $"{UrlEncode(prop.Key)}={UrlEncode(prop.Value)}");
         string result = string.Join("&", queryString);
 

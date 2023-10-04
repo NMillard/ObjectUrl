@@ -11,7 +11,7 @@ public class QueryParameterAttribute : Attribute
     private readonly ValueFormatter formatter = new DefaultValueFormatter(); 
 
     /// <summary>
-    /// Set
+    /// 
     /// </summary>
     /// <param name="name"></param>
     /// <param name="type"></param>
