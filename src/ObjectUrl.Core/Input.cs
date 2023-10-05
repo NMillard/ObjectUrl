@@ -52,7 +52,9 @@ public abstract class Input<T>
                     var delimiter = info.GetCustomAttribute<QueryListAttribute>();
                     if (delimiter is null)
                     {
-                        var parameters = from object o in list select (attribute.Name, attribute.Format(o));
+                        var parameters = from object o
+                                                                in list 
+                                                                select (attribute.Name, attribute.Format(o));
                         map.AddRange(parameters);
                     }
                     else

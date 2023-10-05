@@ -8,6 +8,10 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>Nicklas Millard</Copyright>
         <PackageTags>url; url builder; uri; uri builder; query string; http; rest</PackageTags>
+        <DefaultLanguage>en-US</DefaultLanguage>
+        <Description>
+            The simple library for object-centric http requests.
+        </Description>
     </PropertyGroup>
     
     <PropertyGroup>
