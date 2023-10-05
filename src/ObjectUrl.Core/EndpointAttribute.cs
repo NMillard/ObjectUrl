@@ -9,14 +9,14 @@ public class EndpointAttribute : Attribute
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="path"></param>
-    public EndpointAttribute(string path)
+    /// <param name="relativePath"></param>
+    public EndpointAttribute(string relativePath)
     {
-        this.Path = path;
+        RelativePath = relativePath;
     }
     
     /// <summary>
     /// 
     /// </summary>
-    public string Path { get; }
+    public string RelativePath { get; }
 }

@@ -1,6 +1,27 @@
+using System.Collections;
 using System.Reflection;
 
 namespace ObjectUrl.Core;
+
+/// <summary>
+/// 
+/// </summary>
+public class QueryListAttribute : Attribute
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="delimiter"></param>
+    public QueryListAttribute(string delimiter = ",")
+    {
+        Delimiter = delimiter;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public string Delimiter { get; }
+}
 
 /// <summary>
 /// 
@@ -11,68 +32,67 @@ public abstract class Input<T>
     /// 
     /// </summary>
     /// <exception cref="InvalidOperationException"></exception>
-    public Dictionary<string, string?> QueryParameters
+    public IEnumerable<(string Key, string? Value)> QueryParameters
     {
         get
         {
-            Dictionary<string, string?> queryParameters = GetType().GetProperties()
+            var map = new List<(string key, string? value)>();
+            IEnumerable<PropertyInfo> props = GetType().GetProperties()
                 .Where(HasQueryAttribute())
-                .Where(HasValue())
-                .ToDictionary(
-                    info => GetQueryAttribute(info)?.Name ?? throw new InvalidOperationException(),
-                    info =>
+                .Where(HasValue());
+                
+            foreach (PropertyInfo info in props)
+            {
+                QueryParameterAttribute attribute = GetQueryAttribute(info) ?? throw new InvalidOperationException();
+                object? value = info.GetValue(this);
+                if (value is null) continue;
+                
+                if (value is IEnumerable list and not string)
+                {
+                    var delimiter = info.GetCustomAttribute<QueryListAttribute>();
+                    if (delimiter is null)
                     {
-                        QueryParameterAttribute? attribute = GetQueryAttribute(info);
-                        object? value = info.GetValue(this);
+                        var parameters = from object o in list select (attribute.Name, attribute.Format(o));
+                        map.AddRange(parameters);
+                    }
+                    else
+                    {
+                        IEnumerable<string> parameters = from object o in list select attribute.Format(o);
+                        string combinedParameters = string.Join(delimiter.Delimiter, parameters);
+                        map.Add((attribute.Name, string.Join(',', combinedParameters)));
+                    }
+                }
+                else
+                {
+                    (string info, string?) parameter = (attribute.Name, attribute.Format(value!));
+                    map.Add(parameter);
+                }
+            }
 
-                        // Safely force non-null since null values are filtered out.
-                        return attribute?.Format(value!);
-                    });
-
-            return queryParameters;
+            return map;
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    public string EndpointPath
+    public Dictionary<string, string?> PathParameters
     {
         get
         {
-            var attribute = GetType().GetCustomAttribute<EndpointAttribute>();
-            if (attribute is null) throw new InvalidOperationException(string.Format(Messages.MissingEndpoint, GetType().Name));
-
-            Dictionary<string, string?> pathParameters = GetPathParameters();
-            
-            string path = attribute.Path;
-            foreach (KeyValuePair<string, string?> parameter in pathParameters)
-            {
-                var placeholder = $"{{{parameter.Key}}}";
-                if (path.Contains(placeholder))
+            return GetType().GetProperties()
+                .Where(p => p.GetCustomAttribute<PathParameterAttribute>() is not null)
+                .Select(p =>
                 {
-                    path = path.Replace(placeholder, parameter.Value);
-                }
-            }
-
-            return path;
+                    var parameter = p.GetCustomAttribute<PathParameterAttribute>();
+                    string pathName = parameter?.Name ?? p.Name;
+                
+                    return new { PathName = pathName, Value = p.GetValue(this)?.ToString() };
+                })
+                .ToDictionary(p => p.PathName, p => p.Value);
         }
     }
-
-    private Dictionary<string, string?> GetPathParameters()
-    {
-        return GetType().GetProperties()
-            .Where(p => p.GetCustomAttribute<PathParameterAttribute>() is not null)
-            .Select(p =>
-            {
-                var parameter = p.GetCustomAttribute<PathParameterAttribute>();
-                string pathName = parameter?.Name ?? p.Name;
-                
-                return new { PathName = pathName, Value = p.GetValue(this)?.ToString() };
-            })
-            .ToDictionary(p => p.PathName, p => p.Value);
-    } 
-
+    
     private static QueryParameterAttribute? GetQueryAttribute(MemberInfo info) 
         => info.GetCustomAttribute(typeof(QueryParameterAttribute)) as QueryParameterAttribute;
 

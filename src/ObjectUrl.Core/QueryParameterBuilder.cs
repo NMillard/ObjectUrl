@@ -5,7 +5,7 @@ namespace ObjectUrl.Core;
 /// <summary>
 /// 
 /// </summary>
-public static class ObjectParameterBuilder
+public static class QueryParameterBuilder
 {
     /// <summary>
     ///
@@ -15,7 +15,10 @@ public static class ObjectParameterBuilder
     public static string BuildQueryString<T>(Input<T> input)
     {
         IEnumerable<string> queryString = input.QueryParameters
-            .Select(prop => $"{UrlEncode(prop.Key)}={UrlEncode(prop.Value)}");
+            .Select(prop =>
+            {
+                return $"{UrlEncode(prop.Key)}={UrlEncode(prop.Value)}";
+            });
         string result = string.Join("&", queryString);
 
         return $"?{result}";

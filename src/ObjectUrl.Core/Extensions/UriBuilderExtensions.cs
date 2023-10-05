@@ -13,7 +13,7 @@ public static class UriBuilderExtensions
     /// <returns></returns>
     public static UriBuilder AddQueryParameters<T>(this UriBuilder builder, Input<T> input)
     {
-        builder.Query = ObjectParameterBuilder.BuildQueryString(input);
+        builder.Query = QueryParameterBuilder.BuildQueryString(input);
         return builder;
     }
 
@@ -25,7 +25,7 @@ public static class UriBuilderExtensions
     /// <returns></returns>
     public static UriBuilder AddEndpointPath<T>(this UriBuilder builder, Input<T> input)
     {
-        builder.Path = input.EndpointPath;
+        builder.Path = PathParameterBuilder.BuildParameterString(input);
         return builder;
     }
 }

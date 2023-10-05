@@ -1,32 +1,10 @@
+using ObjectUrl.Core.Extensions;
 using ObjectUrl.Core.Formatters;
 
 namespace ObjectUrl.Core.Tests;
 
 public class UnitTest1
 {
-    [Fact]
-    public void Test1()
-    {
-        Dictionary<string, string?> expected = new()
-        {
-            {"date", "2022-12-30"},
-            {"status", "Active"}
-        };
-
-        var input = new SomeRequest
-        {
-            Date = new DateOnly(2022, 12, 30),
-            Status = "Active",
-        };
-
-
-
-        // Act
-        Dictionary<string, string?> parameters = input.QueryParameters;
-
-        Assert.Equal(expected, parameters);
-    }
-
     [Fact]
     public void Test2()
     {
@@ -37,7 +15,7 @@ public class UnitTest1
             Number = 100
         };
 
-        string query = ObjectParameterBuilder.BuildQueryString(input);
+        string query = QueryParameterBuilder.BuildQueryString(input);
         
         var requestUri = new UriBuilder
         {
@@ -49,10 +27,44 @@ public class UnitTest1
 
         Uri res = requestUri.Uri;
     }
+
+    [Fact]
+    public void demo()
+    {
+        var item = new SomeRequest()
+        {
+            Status = "min status",
+            Values = new List<string> {"one", "two"}
+        };
+
+        var p = item.QueryParameters;
+        string result = QueryParameterBuilder.BuildQueryString(item);
+    }
+
+    [Fact]
+    public async Task demo3()
+    {
+        var item = new SomeRequest
+        {
+            Status = "min status",
+            Values = new List<string> {"one", "two"}
+        };
+
+        var client = new HttpClient()
+        {
+            BaseAddress = new Uri("localhost:8080"),
+        };
+
+        await client.SendRequestAsync(item);
+    }
 }
 
+[Endpoint("my/{id}/query")]
 public class SomeRequest : Input<string>
 {
+    [PathParameter("id")]
+    public Guid Id { get; set; }
+    
     [QueryParameter<IsoDateOnlyFormatter>("date")]
     public DateOnly Date { get; init; }
 
@@ -61,4 +73,7 @@ public class SomeRequest : Input<string>
 
     [QueryParameter("number")]
     public decimal? Number { get; set; }
+
+    [QueryParameter("values")]
+    public IEnumerable<string> Values { get; set; }
 }

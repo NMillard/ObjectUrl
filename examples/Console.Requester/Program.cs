@@ -1,20 +1,23 @@
 ﻿using ObjectUrl.Core;
 using ObjectUrl.Core.Extensions;
 
-using var client = new HttpClient()
-{
-    BaseAddress = new Uri("http://localhost:5043")
-};
 
 var input = new Api2Query
 {
     Id = Guid.NewGuid().ToString(),
     Amount = 100,
-    CreditDebit = "Credit"
+    CreditDebit = "Credit",
+    Values = new []{"one", "two"}
 };
 
-UriBuilder uriBuilder = new UriBuilder("http://localhost:5043").AddQueryParameters(input)
+UriBuilder uriBuilder = new UriBuilder("http://localhost:5043")
+    .AddQueryParameters(input)
     .AddEndpointPath(input);
+
+using var client = new HttpClient()
+{
+    BaseAddress = new Uri("http://localhost:5043")
+};
 
 string result = await client.GetStringAsync(uriBuilder.Uri);
 Console.WriteLine(result);
@@ -33,7 +36,7 @@ public class Response
 /// <summary>
 /// 
 /// </summary>
-[Endpoint(path: "api/query")]
+[Endpoint("api/query")]
 public class ApiQuery : Input<Response>
 {
     /// <summary>
@@ -50,7 +53,7 @@ public class ApiQuery : Input<Response>
 }
 
 
-[Endpoint(path: "api/query/{id}")]
+[Endpoint("api/query/{id}")]
 public class Api2Query : Input<Response>
 {
     [PathParameter("id")]
@@ -61,4 +64,7 @@ public class Api2Query : Input<Response>
     
     [QueryParameter("creditDebit")]
     public required string CreditDebit { get; set; }
+
+    [QueryParameter("values")]
+    public IEnumerable<string> Values { get; set; }
 }

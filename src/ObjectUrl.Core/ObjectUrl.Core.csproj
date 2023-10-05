@@ -16,7 +16,7 @@
         <Title>$(ProjectName)</Title>
         <PackageId>$(ProjectName)</PackageId>
         
-        <Summary>Build query strings from objects.</Summary>
+        <Summary>Build http requests from objects.</Summary>
         <DebugType>embedded</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <EmbedAllSources>true</EmbedAllSources>

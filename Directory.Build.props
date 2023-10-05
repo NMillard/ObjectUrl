@@ -7,7 +7,7 @@
         <Authors>Nicklas Millard</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>Nicklas Millard</Copyright>
-        <PackageTags>url; url builder; uri; uri builder; query string;</PackageTags>
+        <PackageTags>url; url builder; uri; uri builder; query string; http; rest</PackageTags>
     </PropertyGroup>
     
     <PropertyGroup>
