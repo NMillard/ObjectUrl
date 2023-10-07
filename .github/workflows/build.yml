@@ -8,45 +8,6 @@ on:
       - 'examples/*'
 jobs:
   build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '7.0.x'
-          include-prerelease: true
-          
-      - name: Restore dotnet tools
-        run: dotnet tool restore
-        
-      - name: Restore dependencies
-        run: dotnet restore
-      
-      - name: Build
-        run: dotnet build --no-restore -c Release
-        
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal --settings .runsettings
-        
-      - name: Generate code coverage report
-        run: dotnet reportgenerator "-reports:./CodeCoverage/*/coverage.cobertura.xml" "-targetdir:./CodeCoverage/Report" "-reporttypes:Html"
-        
-      - name: Package
-        run: dotnet pack --no-restore -c Release --output nupkg
-        
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ObjectUrl
-          path: nupkg/
-          retention-days: 1
-      
-      - name: Publish code coverage report
-        uses: actions/upload-artifact@v3
-        with:
-          name: CodeCoverageReport
-          path: ./CodeCoverage/Report/
+    uses: NMillard/ObjectUrl/.github/workflows/build-base-template.yml@main
+    with:
+      dotnet-version: '7.0.x'
