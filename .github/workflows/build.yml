@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - 'examples/*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,7 +27,7 @@ jobs:
         run: dotnet build --no-restore -c Release
         
       - name: Test
-        run: dotnet test --no-restore --verbosity normal
+        run: dotnet test --no-restore --verbosity normal --settings .runsettings
         
       - name: Package
         run: dotnet pack --no-restore -c Release --output nupkg
@@ -33,6 +35,12 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v3
         with:
-          name: object-url
+          name: ObjectUrl
           path: nupkg/
           retention-days: 1
+      
+      - name: Publish code coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: CodeCoverageReport
+          path: ./CodeCoverage/Report/
