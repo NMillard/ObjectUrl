@@ -51,3 +51,5 @@ jobs:
         with:
           name: CodeCoverageReport
           path: ./CodeCoverage/Report/
+          retention-days: 1
+          

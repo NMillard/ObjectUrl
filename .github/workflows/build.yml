@@ -6,6 +6,7 @@ on:
       - '*'
     paths-ignore:
       - 'examples/*'
+      - 'readme.md'
 jobs:
   build:
     uses: NMillard/ObjectUrl/.github/workflows/build-base-template.yml@main
