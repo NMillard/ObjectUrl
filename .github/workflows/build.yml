@@ -20,6 +20,9 @@ jobs:
           dotnet-version: '7.0.x'
           include-prerelease: true
           
+      - name: Restore dotnet tools
+        run: dotnet tool restore
+        
       - name: Restore dependencies
         run: dotnet restore
       
@@ -28,6 +31,9 @@ jobs:
         
       - name: Test
         run: dotnet test --no-restore --verbosity normal --settings .runsettings
+        
+      - name: Generate code coverage report
+        run: dotnet reportgenerator "-reports:./CodeCoverage/*/coverage.cobertura.xml" "-targetdir:./CodeCoverage/Report" "-reporttypes:Html"
         
       - name: Package
         run: dotnet pack --no-restore -c Release --output nupkg
