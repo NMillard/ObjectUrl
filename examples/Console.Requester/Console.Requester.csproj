@@ -5,6 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
+        <!--
+        This project is used as a collection of examples
+        so we'd like to exclude it from being picked up 
+        by 'dotnet test'
+        -->
+        <IsTestProject>false</IsTestProject>
+        
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
