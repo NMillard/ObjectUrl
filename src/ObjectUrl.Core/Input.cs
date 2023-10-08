@@ -53,8 +53,8 @@ public abstract class Input<T>
                     if (delimiter is null)
                     {
                         var parameters = from object o
-                                                                in list 
-                                                                select (attribute.Name, attribute.Format(o));
+                                in list select (attribute.Name, attribute.Format(o));
+                        
                         map.AddRange(parameters);
                     }
                     else
