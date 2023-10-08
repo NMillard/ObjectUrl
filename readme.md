@@ -8,8 +8,8 @@ This package came into existence after having to use countless external APIs and
 their query parameters, path variables, and response types.
 
 Encapsulate API call requirements within a single object that can be used with the `HttpClient`
-without relying on buil[ObjectUrl.Core.csproj](src%2FObjectUrl.Core%2FObjectUrl.Core.csproj)ding typed http clients that you inject as constructor arguments.
-[ObjectUrl.Core.csproj](src%2FObjectUrl.Core%2FObjectUrl.Core.csproj)
+without relying on building typed http clients that you inject as constructor arguments.
+
 The idea is simple: create a class that models a request and send the request. That's it.
 
 ```csharp
