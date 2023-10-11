@@ -22,7 +22,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '7.0.x'
-          include-prerelease: true
 
       - name: Download NuGet package from build step
         uses: actions/download-artifact@v2
