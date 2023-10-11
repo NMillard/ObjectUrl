@@ -20,6 +20,9 @@
         <PackageId>$(ProjectName)</PackageId>
         
         <Summary>Build http requests from objects.</Summary>
+        <RepositoryUrl>https://github.com/NMillard/ObjectUrl</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        
         <DebugType>embedded</DebugType>
         <DebugSymbols>true</DebugSymbols>
         <EmbedAllSources>true</EmbedAllSources>
