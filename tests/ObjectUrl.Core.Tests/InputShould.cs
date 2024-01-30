@@ -74,7 +74,7 @@ public class InputShould
         };
 
         // Act
-        IEnumerable<(string Key, string? Value)> result = sut.QueryParameters;
+        IEnumerable<(string Key, string? Value)> result = sut.QueryParameters.ToList();
 
         Assert.Contains(result, tuple => tuple.Key == "values");
         Assert.Contains(result, tuple => tuple.Value == expectedValues[0]);
@@ -91,7 +91,7 @@ public class InputShould
         };
 
         // Act
-        IEnumerable<(string Key, string? Value)> result = sut.QueryParameters;
+        IEnumerable<(string Key, string? Value)> result = sut.QueryParameters.ToList();
 
         Assert.Contains(result, tuple => tuple.Key == "values");
         Assert.Contains(result, tuple => tuple.Value == "one,two");
@@ -99,7 +99,7 @@ public class InputShould
 }
 
 [Endpoint("my/path")]
-public class InputNoPathParameters : Input<string> { }
+public class InputNoPathParameters : Input<string>;
 
 
 [Endpoint("my/{Id}/path")]
@@ -131,6 +131,6 @@ public class InputWithListQueryParameter : Input<string>
 
 public class InputWithCommaSeparatedListQueryParameter : Input<string>
 {
-    [QueryParameter("values"), QueryList]
+    [QueryParameter("values"), DelimitedQueryListFormatter]
     public IEnumerable<string> Values { get; set; }
 }

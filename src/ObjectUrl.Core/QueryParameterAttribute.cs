@@ -8,7 +8,7 @@ namespace ObjectUrl.Core;
 [AttributeUsage(AttributeTargets.Property)]
 public class QueryParameterAttribute : Attribute
 {
-    private readonly ValueFormatter formatter = new DefaultValueFormatter(); 
+    private readonly ValueFormatter formatter = new DefaultValueFormatter();
 
     /// <summary>
     /// 

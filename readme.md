@@ -1,4 +1,4 @@
-<img src="images/icon.png" width="100" height="100" alt="icon">
+<img src="https://github.com/NMillard/ObjectUrl/blob/main/images/icon.png" width="100" height="100" alt="icon">
 
 # ObjectUrl: Documented API objects
 ![build](https://github.com/NMillard/ObjectUrl/actions/workflows/build.yml/badge.svg) 
