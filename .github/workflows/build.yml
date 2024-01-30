@@ -11,5 +11,5 @@ jobs:
   build:
     uses: NMillard/ObjectUrl/.github/workflows/build-base-template.yml@main
     with:
-      dotnet-version: '7.0.x'
+      dotnet-version: '8.x'
       package-name: ObjectUrl
