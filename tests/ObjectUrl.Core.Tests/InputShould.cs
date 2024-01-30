@@ -1,3 +1,5 @@
+using ObjectUrl.Core.Formatters;
+
 namespace ObjectUrl.Core.Tests;
 
 public class InputShould
@@ -126,11 +128,11 @@ public class InputWithQueryParameters : Input<string>
 public class InputWithListQueryParameter : Input<string>
 {
     [QueryParameter("values")]
-    public IEnumerable<string> Values { get; set; }
+    public IEnumerable<string> Values { get; set; } = [];
 }
 
 public class InputWithCommaSeparatedListQueryParameter : Input<string>
 {
-    [QueryParameter("values"), DelimitedQueryListFormatter]
-    public IEnumerable<string> Values { get; set; }
+    [QueryParameter("values"), DelimitedValueStrategy]
+    public IEnumerable<string> Values { get; set; } = [];
 }

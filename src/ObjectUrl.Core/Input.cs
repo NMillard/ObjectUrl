@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Reflection;
+using ObjectUrl.Core.Formatters;
 
 namespace ObjectUrl.Core;
 
@@ -8,7 +9,7 @@ namespace ObjectUrl.Core;
 /// </summary>
 public abstract class Input<T>
 {
-    private readonly IQueryListFormatter nullQueryListFormatter = new NullListFormatter();
+    private readonly IQueryListFormatter nullQueryListFormatter = new DuplicateKeyStrategy();
     
     /// <summary>
     /// 
@@ -39,7 +40,7 @@ public abstract class Input<T>
                 }
 
                 IEnumerable<object> list = value as IEnumerable<object> ?? new List<object>();
-                IQueryListFormatter listFormatter = info.GetCustomAttribute<DelimitedQueryListFormatter>()
+                IQueryListFormatter listFormatter = info.GetCustomAttribute<DelimitedValueStrategyAttribute>()
                                                     ?? nullQueryListFormatter;
 
                 IEnumerable<(string Name, string? Value)> result = listFormatter.Format(attribute, list);
