@@ -98,6 +98,21 @@ public class InputShould
         Assert.Contains(result, tuple => tuple.Key == "values");
         Assert.Contains(result, tuple => tuple.Value == "one,two");
     }
+
+    [Fact]
+    public void ReturnsQueryParametersListAsPipeDelimitedString()
+    {
+        var sut = new InputWithPipeSeparatedListQueryParameter
+        {
+            Values = [1, 2]
+        };
+        
+        // Act
+        List<(string Key, string? Value)> result = sut.QueryParameters.ToList();
+        
+        Assert.Contains(result, tuple => tuple.Key == "values");
+        Assert.Contains(result, tuple => tuple.Value == "1|2");
+    }
 }
 
 [Endpoint("my/path")]
@@ -135,4 +150,10 @@ public class InputWithCommaSeparatedListQueryParameter : Input<string>
 {
     [QueryParameter("values"), DelimitedValueStrategy]
     public IEnumerable<string> Values { get; set; } = [];
+}
+
+public class InputWithPipeSeparatedListQueryParameter : Input<string>
+{
+    [QueryParameter("values"), DelimitedValueStrategy(delimiter: "|")]
+    public IEnumerable<int> Values { get; set; } = [];
 }

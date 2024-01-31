@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace ObjectUrl.Core.Formatters;
 
 /// <summary>
@@ -13,6 +15,6 @@ public interface IQueryListFormatter
     /// <returns></returns>
     public IEnumerable<(string Name, string? Value)> Format(
         QueryParameterAttribute attribute,
-        IEnumerable<object> parameters
+        IEnumerable parameters
     );
 }

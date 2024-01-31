@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace ObjectUrl.Core.Formatters;
 
 /// <summary>
@@ -30,9 +32,9 @@ public class DelimitedValueStrategyAttribute : Attribute, IQueryListFormatter
     /// 
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable<object> parameters)
+    public IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable parameters)
     {
-        IEnumerable<string?> p = parameters.Select(attribute.Format);
+        IEnumerable<string?> p = parameters.Cast<object>().Select(attribute.Format);
         string combinedParameters = string.Join(Delimiter, p);
 
         (string Name, string? combinedParameters) valueTuple = (attribute.Name, combinedParameters);

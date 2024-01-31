@@ -39,7 +39,7 @@ public abstract class Input<T>
                     continue;
                 }
 
-                IEnumerable<object> list = value as IEnumerable<object> ?? new List<object>();
+                IEnumerable list = value as IEnumerable ?? new List<object>();
                 IQueryListFormatter listFormatter = info.GetCustomAttribute<DelimitedValueStrategyAttribute>()
                                                     ?? nullQueryListFormatter;
 

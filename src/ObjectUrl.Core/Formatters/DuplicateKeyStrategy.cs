@@ -1,3 +1,5 @@
+using System.Collections;
+
 namespace ObjectUrl.Core.Formatters;
 
 /// <summary>
@@ -15,9 +17,10 @@ public class DuplicateKeyStrategy : IQueryListFormatter
     /// <param name="attribute"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable<object> parameters)
+    public IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable parameters)
     {
         IEnumerable<(string Name, string? Value)> p = parameters
+            .Cast<object>()
             .Select(o => (attribute.Name, attribute.Format(o)));
                         
         return p;
