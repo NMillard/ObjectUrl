@@ -5,7 +5,7 @@ namespace ObjectUrl.Core.Formatters;
 /// <summary>
 /// 
 /// </summary>
-public interface IQueryListFormatter
+public abstract class QueryListFormatter : Attribute
 {
     /// <summary>
     /// 
@@ -13,7 +13,7 @@ public interface IQueryListFormatter
     /// <param name="attribute"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public IEnumerable<(string Name, string? Value)> Format(
+    public abstract IEnumerable<(string Name, string? Value)> Format(
         QueryParameterAttribute attribute,
         IEnumerable parameters
     );

@@ -1,19 +1,18 @@
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace ObjectUrl.Core.Credentials;
+namespace ObjectUrl.Core.Authorization;
 
 /// <summary>
-/// 
+/// The basic authorization class adds the authorization header "<c>Basic base64(ascii(username:password))</c>" to
+/// the request.
 /// </summary>
-/// <param name="Username"></param>
-/// <param name="Password"></param>
-public record BasicCredentials(string Username, string Password) : IClientCredentials
+public record BasicAuthorization(string Username, string Password) : IClientAuthorization
 {
     /// <summary>
     /// 
     /// </summary>
-    public string Type => "Basic";
+    private static string Type => "Basic";
 
     /// <summary>
     /// 

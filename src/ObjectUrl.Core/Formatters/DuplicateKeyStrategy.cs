@@ -9,7 +9,7 @@ namespace ObjectUrl.Core.Formatters;
 /// Having two values for the query parameter "key", you will end up with a query string like this:
 /// <code>?key=first&amp;key=second</code>
 /// </example>
-public class DuplicateKeyStrategy : IQueryListFormatter
+public class DuplicateKeyStrategy : QueryListFormatter
 {
     /// <summary>
     /// 
@@ -17,7 +17,7 @@ public class DuplicateKeyStrategy : IQueryListFormatter
     /// <param name="attribute"></param>
     /// <param name="parameters"></param>
     /// <returns></returns>
-    public IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable parameters)
+    public override IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable parameters)
     {
         IEnumerable<(string Name, string? Value)> p = parameters
             .Cast<object>()

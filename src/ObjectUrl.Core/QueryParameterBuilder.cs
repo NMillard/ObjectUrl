@@ -4,18 +4,18 @@ using System.Web;
 namespace ObjectUrl.Core;
 
 /// <summary>
-/// Provides extension methods to build the query parameter string from an <see cref="Input{T}"/>.
+/// Provides extension methods to build the query parameter string from an <see cref="HttpRequest{T}"/>.
 /// </summary>
 public static class QueryParameterBuilder
 {
     /// <summary>
-    /// Build a query string from an <see cref="Input{T}"/>.
+    /// Build a query string from an <see cref="HttpRequest{T}"/>.
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="httpRequest"></param>
     /// <returns></returns>
-    public static string BuildQueryString<T>(Input<T> input)
+    public static string BuildQueryString<T>(HttpRequest<T> httpRequest)
     {
-        IEnumerable<(string Key, string? Value)> inputQueryParameters = input.QueryParameters.ToList();
+        IEnumerable<(string Key, string? Value)> inputQueryParameters = httpRequest.QueryParameters.ToList();
         if (!inputQueryParameters.Any()) return "";
         
         var queryString = new StringBuilder("?");

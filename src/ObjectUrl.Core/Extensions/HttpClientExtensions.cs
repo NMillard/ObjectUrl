@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using ObjectUrl.Core.Credentials;
+using ObjectUrl.Core.Authorization;
 
 namespace ObjectUrl.Core.Extensions;
 
@@ -12,13 +12,13 @@ public static class HttpClientExtensions
     /// 
     /// </summary>
     /// <param name="client"></param>
-    /// <param name="input"></param>
+    /// <param name="httpRequest"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, Input<T> input)
+    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, HttpRequest<T> httpRequest)
     {
         if (client.BaseAddress is null) throw new InvalidOperationException("Missing uri. The http client must be configured with a BaseAddress.");
-        return await SendRequestAsync(client, client.BaseAddress, input).ConfigureAwait(false);
+        return await SendRequestAsync(client, client.BaseAddress, httpRequest).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -26,14 +26,14 @@ public static class HttpClientExtensions
     /// </summary>
     /// <param name="client"></param>
     /// <param name="uri"></param>
-    /// <param name="input"></param>
+    /// <param name="httpRequest"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, Uri uri, Input<T> input)
+    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, Uri uri, HttpRequest<T> httpRequest)
     {
         UriBuilder uriBuilder = new UriBuilder(uri)
-            .AddQueryParameters(input)
-            .AddEndpointPath(input);
+            .AddQueryParameters(httpRequest)
+            .AddEndpointPath(httpRequest);
 
         T? result = await client.GetFromJsonAsync<T?>(uriBuilder.Uri).ConfigureAwait(false);
         return result;
@@ -43,11 +43,23 @@ public static class HttpClientExtensions
     /// 
     /// </summary>
     /// <param name="client"></param>
-    /// <param name="credentials"></param>
+    /// <param name="authorization"></param>
     /// <returns></returns>
-    public static HttpClient AddAuthorization(this HttpClient client, IClientCredentials credentials)
+    public static HttpClient AddAuthorization(this HttpClient client, IClientAuthorization authorization)
     {
-        credentials.AddAuthentication(client);
+        authorization.AddAuthentication(client);
+        return client;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="client"></param>
+    /// <returns></returns>
+    public static HttpClient ClearAuthorization(this HttpClient client)
+    {
+        client.DefaultRequestHeaders.Authorization = null;
+        
         return client;
     }
 }

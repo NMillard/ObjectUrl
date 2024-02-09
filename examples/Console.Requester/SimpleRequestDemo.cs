@@ -3,7 +3,7 @@ using ObjectUrl.Core.Extensions;
 
 namespace Console.Requester;
 
-public class SimpleRequest
+public class SimpleRequestDemo
 {
     [Fact]
     public async Task ApiRequest()
@@ -28,18 +28,8 @@ public class SimpleRequest
     }
 }
 
-
-
-public class MyApiResponse
-{
-    public Guid Id { get; set; }
-    public int Amount { get; set; }
-    public string CreditDebit { get; set; }
-}
-
-
 [Endpoint("api/query/{id}")] // The API endpoint
-public class MyApiRequest : Input<MyApiResponse> // MyApiResponse is the expected JSON format received
+public class MyApiRequest : HttpRequest<MyApiResponse> // MyApiResponse is the expected JSON format received
 {
     [PathParameter("id")] // Property value replaces the path variable {id} 
     public Guid Id { get; set; }

@@ -5,11 +5,23 @@ using ObjectUrl.Core.Formatters;
 namespace ObjectUrl.Core;
 
 /// <summary>
-/// 
+/// Models an HTTP request that is sent to an API.
 /// </summary>
-public abstract class Input<T>
+/// <remarks>The implementing class must be annotated with the attribute <c>[Endpoint(path)]</c>.</remarks>
+/// <example>
+/// <code>
+/// [Endpoint("api/auth-demo/{id}")]
+/// public class MyRequest : HttpRequest&lt;SomeResponseModel&gt;
+/// {
+///    [PathParameter("id")]
+///    public Guid SomeId { get; set; }
+/// }
+/// </code>
+/// </example>
+/// <typeparam name="T">The request's expected return type.</typeparam>
+public abstract class HttpRequest<T>
 {
-    private readonly IQueryListFormatter nullQueryListFormatter = new DuplicateKeyStrategy();
+    private readonly QueryListFormatter defaultListFormatter = new DuplicateKeyStrategy();
     
     /// <summary>
     /// 
@@ -40,8 +52,8 @@ public abstract class Input<T>
                 }
 
                 IEnumerable list = value as IEnumerable ?? new List<object>();
-                IQueryListFormatter listFormatter = info.GetCustomAttribute<DelimitedValueStrategyAttribute>()
-                                                    ?? nullQueryListFormatter;
+                QueryListFormatter listFormatter = info.GetCustomAttribute<QueryListFormatter>()
+                                                    ?? defaultListFormatter;
 
                 IEnumerable<(string Name, string? Value)> result = listFormatter.Format(attribute, list);
                 map.AddRange(result);

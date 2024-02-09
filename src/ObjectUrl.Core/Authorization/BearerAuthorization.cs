@@ -1,22 +1,17 @@
 using System.Net.Http.Headers;
 
-namespace ObjectUrl.Core.Credentials;
+namespace ObjectUrl.Core.Authorization;
 
 /// <summary>
 /// 
 /// </summary>
 /// <param name="BearerToken"></param>
-public record BearerCredentials(string BearerToken) : IClientCredentials
+public record BearerAuthorization(string BearerToken) : IClientAuthorization
 {
     /// <summary>
     /// 
     /// </summary>
-    public string Type => "Bearer";
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Value => BearerToken;
+    private static string Type => "Bearer";
 
     /// <summary>
     /// 
@@ -26,7 +21,7 @@ public record BearerCredentials(string BearerToken) : IClientCredentials
     {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             Type,
-            Value
+            BearerToken
         );
     }
 }

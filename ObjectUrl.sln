@@ -9,6 +9,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectUrl.Core", "src\ObjectUrl.Core\ObjectUrl.Core.csproj", "{6E731652-5BDA-4F93-AAFA-57BB94993A82}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29EDCEB8-5814-4393-919B-08BD56EDE8D9}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+		NuGet.config = NuGet.config
+		generate-report.sh = generate-report.sh
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{7BCD42A2-14E0-49B2-A27F-45187DE64F93}"
 EndProject

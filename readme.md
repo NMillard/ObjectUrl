@@ -7,8 +7,8 @@
 This package came into existence after having to use countless external APIs and dealing with documenting
 their query parameters, path variables, and response types.
 
-Encapsulate API call requirements within a single object that can be used with the `HttpClient`
-without relying on building typed http clients that you inject as constructor arguments.
+The core concept here is to bundle the API call requirements into a neat single object, which can then be employed with
+the `HttpClient`. No need to build typed http clients and inject them as constructor arguments anymore.
 
 The idea is simple: create a class that models a request and send the request. That's it.
 
@@ -48,24 +48,47 @@ MyApiResponse? result = await client.SendRequestAsync(input);
 ```
 
 ## Query strings that are list values
-You can easily create a multi-value query string, or define your own delimiter for list values.
+In many scenarios, you will need to convert a list property into a query string. The following are the two conventional strategies:
+- Duplicate key: Each list value is represented with a repeated occurrence of the property name.
+- Delimited value: The property name occurs once and pairs with a delimited list of values.
+
+ObjectUrl defaults to using a duplicate key strategy for list types, if none is defined.
 
 ```csharp
-// Multi-value query string
+// Duplicate key strategy
 [QueryParameter("values")]
-public IEnumerable<string> Values { get; set; } = new []{"one", "two"}
+public IEnumerable<string> Values { get; set; } = ["one", "two"]
 
 // -> ?values=one&values=two
 
 
-// Custom value delimiter
+// Delimited value
 [QueryParameter("values")]
-[QueryList(delimiter: ",")]
-public IEnumerable<string> Values { get; set; } = new []{"one", "two"}
+[DelimitedValueStrategy(delimiter: ",")]
+public IEnumerable<string> Values { get; set; } = ["one", "two"]
 
 // Notice the comma is url encoded
 // -> ?values=one%2ctwo
 ```
+
+## Authorization
+Adding authorization to your requests is easy. There's an `AddAuthorization(client, authorization)` extension method on the `HttpClient` class.  
+> Note that the `HttpRequest` object is decoupled from the authorization, since one request may have multiple ways to authenticate.
+
+Right off the bat, ObjectUrl supports two authorization types: `Basic` and `Bearer`.
+
+```csharp
+// Simple Basic authorization using username and password.
+// The username and password is concatenated with a colon (:), turned into ASCII bytes, and then converted to base64.
+client.AddAuthorization(new BasicAuthorization("username", "password"));
+// -> Authorization: Basic dXNlcm5hbWU6cGFzc3dvcmQ
+
+
+// Bearer
+client.AddAuthorization(new BearerAuthorization("some-bearer-token"));
+// -> Authorization: Bearer some-bearer-token
+```
+
 
 
 ## Generate code coverage report

@@ -10,15 +10,15 @@ public static class PathParameterBuilder
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="httpRequest"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static string BuildParameterString<T>(Input<T> input)
+    public static string BuildParameterString<T>(HttpRequest<T> httpRequest)
     {
-        Dictionary<string, string?> pathParameters = input.PathParameters;
+        Dictionary<string, string?> pathParameters = httpRequest.PathParameters;
         
-        var attribute = input.GetType().GetCustomAttribute<EndpointAttribute>();
-        if (attribute is null) throw new InvalidOperationException(string.Format(Messages.MissingEndpoint, input.GetType().Name));
+        var attribute = httpRequest.GetType().GetCustomAttribute<EndpointAttribute>();
+        if (attribute is null) throw new InvalidOperationException(string.Format(Messages.MissingEndpoint, httpRequest.GetType().Name));
 
         string path = attribute.RelativePath;
         foreach (KeyValuePair<string, string?> parameter in pathParameters)

@@ -12,30 +12,16 @@ namespace ObjectUrl.Core.Formatters;
 /// <code>?key=first,second</code>
 /// </example>
 [AttributeUsage(AttributeTargets.Property)]
-public class DelimitedValueStrategyAttribute : Attribute, IQueryListFormatter
+public class DelimitedValueStrategyAttribute(string delimiter = ",") : QueryListFormatter
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="delimiter"></param>
-    public DelimitedValueStrategyAttribute(string delimiter = ",")
-    {
-        Delimiter = delimiter;
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Delimiter { get; }
-
-    /// <summary>
-    /// 
-    /// </summary>
     /// <returns></returns>
-    public IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable parameters)
+    public override IEnumerable<(string Name, string? Value)> Format(QueryParameterAttribute attribute, IEnumerable parameters)
     {
         IEnumerable<string?> p = parameters.Cast<object>().Select(attribute.Format);
-        string combinedParameters = string.Join(Delimiter, p);
+        string combinedParameters = string.Join(delimiter, p);
 
         (string Name, string? combinedParameters) valueTuple = (attribute.Name, combinedParameters);
         return new[] { valueTuple };

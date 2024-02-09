@@ -7,7 +7,7 @@ public class InputShould
     [Fact]
     public void FunctionWithNoPathParameters()
     {
-        var sut = new InputNoPathParameters();
+        var sut = new HttpRequestNoPathParameters();
 
         // Act
         Dictionary<string, string?> result = sut.PathParameters;
@@ -19,7 +19,7 @@ public class InputShould
     public void ReturnPathPlaceholderParameters()
     {
         var expectedId = Guid.NewGuid();
-        var sut = new InputWithPathParameters
+        var sut = new HttpRequestWithPathParameters
         {
             Id = expectedId
         };
@@ -35,7 +35,7 @@ public class InputShould
     public void ReturnPathPlaceholderParametersWhenRenamed()
     {
         var expectedId = Guid.NewGuid();
-        var sut = new InputWithRenamedPathParameter
+        var sut = new HttpRequestWithRenamedPathParameter
         {
             Id = expectedId
         };
@@ -51,7 +51,7 @@ public class InputShould
     public void ReturnSimpleQueryParameter()
     {
         var expectedId = Guid.NewGuid();
-        var sut = new InputWithQueryParameters
+        var sut = new HttpRequestWithQueryParameters
         {
             Id = expectedId
         };
@@ -70,7 +70,7 @@ public class InputShould
     public void ReturnMultiNameQueryParameter()
     {
         var expectedValues = new[] {"one", "two"};
-        var sut = new InputWithListQueryParameter
+        var sut = new HttpRequestWithListQueryParameter
         {
             Values = expectedValues
         };
@@ -87,7 +87,7 @@ public class InputShould
     public void ReturnQueryParameterListAsSingleCommaSeparatedString()
     {
         var expectedValues = new[] {"one", "two"};
-        var sut = new InputWithCommaSeparatedListQueryParameter
+        var sut = new HttpRequestWithCommaSeparatedListQueryParameter
         {
             Values = expectedValues
         };
@@ -102,7 +102,7 @@ public class InputShould
     [Fact]
     public void ReturnsQueryParametersListAsPipeDelimitedString()
     {
-        var sut = new InputWithPipeSeparatedListQueryParameter
+        var sut = new HttpRequestWithPipeSeparatedListQueryParameter
         {
             Values = [1, 2]
         };
@@ -116,11 +116,11 @@ public class InputShould
 }
 
 [Endpoint("my/path")]
-public class InputNoPathParameters : Input<string>;
+public class HttpRequestNoPathParameters : HttpRequest<string>;
 
 
 [Endpoint("my/{Id}/path")]
-public class InputWithPathParameters : Input<string>
+public class HttpRequestWithPathParameters : HttpRequest<string>
 {
     [PathParameter]
     public Guid Id { get; set; }
@@ -128,31 +128,31 @@ public class InputWithPathParameters : Input<string>
 
 
 [Endpoint("my/{id}/path")]
-public class InputWithRenamedPathParameter : Input<string>
+public class HttpRequestWithRenamedPathParameter : HttpRequest<string>
 {
     [PathParameter("id")]
     public Guid Id { get; set; }
 }
 
-public class InputWithQueryParameters : Input<string>
+public class HttpRequestWithQueryParameters : HttpRequest<string>
 {
     [QueryParameter("id")]
     public Guid Id { get; set; }
 }
 
-public class InputWithListQueryParameter : Input<string>
+public class HttpRequestWithListQueryParameter : HttpRequest<string>
 {
     [QueryParameter("values")]
     public IEnumerable<string> Values { get; set; } = [];
 }
 
-public class InputWithCommaSeparatedListQueryParameter : Input<string>
+public class HttpRequestWithCommaSeparatedListQueryParameter : HttpRequest<string>
 {
     [QueryParameter("values"), DelimitedValueStrategy]
     public IEnumerable<string> Values { get; set; } = [];
 }
 
-public class InputWithPipeSeparatedListQueryParameter : Input<string>
+public class HttpRequestWithPipeSeparatedListQueryParameter : HttpRequest<string>
 {
     [QueryParameter("values"), DelimitedValueStrategy(delimiter: "|")]
     public IEnumerable<int> Values { get; set; } = [];
