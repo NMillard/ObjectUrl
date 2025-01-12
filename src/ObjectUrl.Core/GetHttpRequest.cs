@@ -5,6 +5,15 @@ using ObjectUrl.Core.Formatters;
 namespace ObjectUrl.Core;
 
 /// <summary>
+/// 
+/// </summary>
+public class GetHttpRequest
+{
+    
+}
+
+
+/// <summary>
 /// Models an HTTP request that is sent to an API.
 /// </summary>
 /// <remarks>The implementing class must be annotated with the attribute <c>[Endpoint(path)]</c>.</remarks>
@@ -19,7 +28,7 @@ namespace ObjectUrl.Core;
 /// </code>
 /// </example>
 /// <typeparam name="T">The request's expected return type.</typeparam>
-public abstract class HttpRequest<T>
+public abstract class GetHttpRequest<T> : GetHttpRequest
 {
     private readonly QueryListFormatter defaultListFormatter = new DuplicateKeyStrategy();
     

@@ -28,7 +28,7 @@ public class ListRequestDemo
 }
 
 [Endpoint("api/query/{id}")] // The API endpoint
-public class ListValuesRequest : HttpRequest<MyApiResponse>
+public class ListValuesRequest : GetHttpRequest<MyApiResponse>
 {
     [PathParameter("id")]
     public Guid Id { get; set; }

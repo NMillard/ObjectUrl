@@ -6,21 +6,21 @@ public class QueryParameterBuilderShould
 {
     [Theory]
     [MemberData(nameof(Inputs))]
-    public void BuildQueryStringFromParameters(HttpRequest<string> httpRequest, string expected)
+    public void BuildQueryStringFromParameters(GetHttpRequest<string> getHttpRequest, string expected)
     {
-        string result = QueryParameterBuilder.BuildQueryString(httpRequest);
+        string result = QueryParameterBuilder.BuildQueryString(getHttpRequest);
 
         result.Should().Be(expected);
     }
 
     public static IEnumerable<object[]> Inputs =>
     [
-        [ new SimpleHttpRequest { Name = "Faxe", Age = 50 }, "?name=Faxe&age=50" ],
-        [ new SimpleHttpRequest(), ""]
+        [ new SimpleGetHttpRequest { Name = "Faxe", Age = 50 }, "?name=Faxe&age=50" ],
+        [ new SimpleGetHttpRequest(), ""]
     ];
 }
 
-internal class SimpleHttpRequest : HttpRequest<string>
+internal class SimpleGetHttpRequest : GetHttpRequest<string>
 {
     [QueryParameter("name")] public string? Name { get; set; }
 

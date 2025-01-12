@@ -39,7 +39,7 @@ public class AuthorizationRequestDemo
 }
 
 [Endpoint("api/auth-demo/{id}")]
-public class MyAuthorizationRequest : HttpRequest<string>
+public class MyAuthorizationRequest : GetHttpRequest<string>
 {
     [PathParameter("id")]
     public Guid SomeId { get; set; }

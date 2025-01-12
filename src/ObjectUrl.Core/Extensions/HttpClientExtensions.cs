@@ -12,13 +12,13 @@ public static class HttpClientExtensions
     /// 
     /// </summary>
     /// <param name="client"></param>
-    /// <param name="httpRequest"></param>
+    /// <param name="getHttpRequest"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, HttpRequest<T> httpRequest)
+    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, GetHttpRequest<T> getHttpRequest)
     {
         if (client.BaseAddress is null) throw new InvalidOperationException("Missing uri. The http client must be configured with a BaseAddress.");
-        return await SendRequestAsync(client, client.BaseAddress, httpRequest).ConfigureAwait(false);
+        return await SendRequestAsync(client, client.BaseAddress, getHttpRequest).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -26,14 +26,14 @@ public static class HttpClientExtensions
     /// </summary>
     /// <param name="client"></param>
     /// <param name="uri"></param>
-    /// <param name="httpRequest"></param>
+    /// <param name="getHttpRequest"></param>
     /// <typeparam name="T"></typeparam>
     /// <returns></returns>
-    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, Uri uri, HttpRequest<T> httpRequest)
+    public static async Task<T?> SendRequestAsync<T>(this HttpClient client, Uri uri, GetHttpRequest<T> getHttpRequest)
     {
         UriBuilder uriBuilder = new UriBuilder(uri)
-            .AddQueryParameters(httpRequest)
-            .AddEndpointPath(httpRequest);
+            .AddQueryParameters(getHttpRequest)
+            .AddEndpointPath(getHttpRequest);
 
         T? result = await client.GetFromJsonAsync<T?>(uriBuilder.Uri).ConfigureAwait(false);
         return result;

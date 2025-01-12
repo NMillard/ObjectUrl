@@ -1,13 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 using ObjectUrl.Core.Formatters;
 
 namespace ObjectUrl.Core.Tests;
 
-public class InputShould
+public class GetRequestShould
 {
     [Fact]
     public void FunctionWithNoPathParameters()
     {
-        var sut = new HttpRequestNoPathParameters();
+        var sut = new GetHttpRequestNoPathParameters();
 
         // Act
         Dictionary<string, string?> result = sut.PathParameters;
@@ -19,7 +20,7 @@ public class InputShould
     public void ReturnPathPlaceholderParameters()
     {
         var expectedId = Guid.NewGuid();
-        var sut = new HttpRequestWithPathParameters
+        var sut = new GetHttpRequestWithPathParameters
         {
             Id = expectedId
         };
@@ -35,7 +36,7 @@ public class InputShould
     public void ReturnPathPlaceholderParametersWhenRenamed()
     {
         var expectedId = Guid.NewGuid();
-        var sut = new HttpRequestWithRenamedPathParameter
+        var sut = new GetHttpRequestWithRenamedPathParameter
         {
             Id = expectedId
         };
@@ -51,7 +52,7 @@ public class InputShould
     public void ReturnSimpleQueryParameter()
     {
         var expectedId = Guid.NewGuid();
-        var sut = new HttpRequestWithQueryParameters
+        var sut = new GetHttpRequestWithQueryParameters
         {
             Id = expectedId
         };
@@ -70,7 +71,7 @@ public class InputShould
     public void ReturnMultiNameQueryParameter()
     {
         var expectedValues = new[] {"one", "two"};
-        var sut = new HttpRequestWithListQueryParameter
+        var sut = new GetHttpRequestWithListQueryParameter
         {
             Values = expectedValues
         };
@@ -87,7 +88,7 @@ public class InputShould
     public void ReturnQueryParameterListAsSingleCommaSeparatedString()
     {
         var expectedValues = new[] {"one", "two"};
-        var sut = new HttpRequestWithCommaSeparatedListQueryParameter
+        var sut = new GetHttpRequestWithCommaSeparatedListQueryParameter
         {
             Values = expectedValues
         };
@@ -102,7 +103,7 @@ public class InputShould
     [Fact]
     public void ReturnsQueryParametersListAsPipeDelimitedString()
     {
-        var sut = new HttpRequestWithPipeSeparatedListQueryParameter
+        var sut = new GetHttpRequestWithPipeSeparatedListQueryParameter
         {
             Values = [1, 2]
         };
@@ -116,11 +117,11 @@ public class InputShould
 }
 
 [Endpoint("my/path")]
-public class HttpRequestNoPathParameters : HttpRequest<string>;
+public class GetHttpRequestNoPathParameters : GetHttpRequest<string>;
 
 
 [Endpoint("my/{Id}/path")]
-public class HttpRequestWithPathParameters : HttpRequest<string>
+public class GetHttpRequestWithPathParameters : GetHttpRequest<string>
 {
     [PathParameter]
     public Guid Id { get; set; }
@@ -128,31 +129,32 @@ public class HttpRequestWithPathParameters : HttpRequest<string>
 
 
 [Endpoint("my/{id}/path")]
-public class HttpRequestWithRenamedPathParameter : HttpRequest<string>
+public class GetHttpRequestWithRenamedPathParameter : GetHttpRequest<string>
 {
+    [Required]
     [PathParameter("id")]
     public Guid Id { get; set; }
 }
 
-public class HttpRequestWithQueryParameters : HttpRequest<string>
+public class GetHttpRequestWithQueryParameters : GetHttpRequest<string>
 {
     [QueryParameter("id")]
     public Guid Id { get; set; }
 }
 
-public class HttpRequestWithListQueryParameter : HttpRequest<string>
+public class GetHttpRequestWithListQueryParameter : GetHttpRequest<string>
 {
     [QueryParameter("values")]
     public IEnumerable<string> Values { get; set; } = [];
 }
 
-public class HttpRequestWithCommaSeparatedListQueryParameter : HttpRequest<string>
+public class GetHttpRequestWithCommaSeparatedListQueryParameter : GetHttpRequest<string>
 {
     [QueryParameter("values"), DelimitedValueStrategy]
     public IEnumerable<string> Values { get; set; } = [];
 }
 
-public class HttpRequestWithPipeSeparatedListQueryParameter : HttpRequest<string>
+public class GetHttpRequestWithPipeSeparatedListQueryParameter : GetHttpRequest<string>
 {
     [QueryParameter("values"), DelimitedValueStrategy(delimiter: "|")]
     public IEnumerable<int> Values { get; set; } = [];

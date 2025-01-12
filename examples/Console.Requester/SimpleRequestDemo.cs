@@ -29,7 +29,7 @@ public class SimpleRequestDemo
 }
 
 [Endpoint("api/query/{id}")] // The API endpoint
-public class MyApiRequest : HttpRequest<MyApiResponse> // MyApiResponse is the expected JSON format received
+public class MyApiRequest : GetHttpRequest<MyApiResponse> // MyApiResponse is the expected JSON format received
 {
     [PathParameter("id")] // Property value replaces the path variable {id} 
     public Guid Id { get; set; }

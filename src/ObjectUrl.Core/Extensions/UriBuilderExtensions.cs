@@ -9,11 +9,11 @@ public static class UriBuilderExtensions
     /// 
     /// </summary>
     /// <param name="builder"></param>
-    /// <param name="httpRequest"></param>
+    /// <param name="getHttpRequest"></param>
     /// <returns></returns>
-    public static UriBuilder AddQueryParameters<T>(this UriBuilder builder, HttpRequest<T> httpRequest)
+    public static UriBuilder AddQueryParameters<T>(this UriBuilder builder, GetHttpRequest<T> getHttpRequest)
     {
-        builder.Query = QueryParameterBuilder.BuildQueryString(httpRequest);
+        builder.Query = QueryParameterBuilder.BuildQueryString(getHttpRequest);
         return builder;
     }
 
@@ -21,11 +21,11 @@ public static class UriBuilderExtensions
     /// 
     /// </summary>
     /// <param name="builder"></param>
-    /// <param name="httpRequest"></param>
+    /// <param name="getHttpRequest"></param>
     /// <returns></returns>
-    public static UriBuilder AddEndpointPath<T>(this UriBuilder builder, HttpRequest<T> httpRequest)
+    public static UriBuilder AddEndpointPath<T>(this UriBuilder builder, GetHttpRequest<T> getHttpRequest)
     {
-        builder.Path = PathParameterBuilder.BuildParameterString(httpRequest);
+        builder.Path = PathParameterBuilder.BuildParameterString(getHttpRequest);
         return builder;
     }
 }
